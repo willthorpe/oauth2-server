@@ -102,8 +102,9 @@ class BearerTokenValidator implements AuthorizationValidatorInterface
 
             try {
                 $this->jwtConfiguration->validator()->assert($token, ...$constraints);
+
             } catch (RequiredConstraintsViolated $exception) {
-                throw OAuthServerException::accessDenied('Access token could not be verified');
+                throw OAuthServerException::accessDenied('Access token could not be verified', null, $exception);
             }
         } catch (CannotDecodeContent | InvalidTokenStructure | UnsupportedHeaderFound $exception) {
             throw OAuthServerException::accessDenied($exception->getMessage(), null, $exception);
